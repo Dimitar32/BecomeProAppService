@@ -13,8 +13,8 @@ const router = express.Router();
 router.use(verifyToken); // All routes require authentication
 
 // Training categories
-router.get('/categories', getTrainingCategories);
-router.post('/categories', addTrainingCategory);
+router.get('/trainings/categories', getTrainingCategories);
+router.post('/trainings/categories', addTrainingCategory);
 
 // Trainings
 router.get('/trainings', getAllTrainings);
