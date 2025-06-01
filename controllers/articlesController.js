@@ -126,3 +126,34 @@ export const updateArticle = async (req, res) => {
     res.status(500).json({ success: false, message: 'Internal Server Error' });
   }
 };
+
+// Get only article titles and ids
+export const getArticleTitles = async (req, res) => {
+  try {
+    const result = await pool.query(
+      'SELECT id, ttl FROM art.t_art ORDER BY cre_dat DESC'
+    );
+    res.json({ success: true, articles: result.rows });
+  } catch (error) {
+    console.error('Get article titles error:', error);
+    res.status(500).json({ success: false, message: 'Internal Server Error' });
+  }
+};
+
+// Get article by id
+export const getArticleById = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const result = await pool.query(
+      'SELECT id, cat_id, ttl, slg, exc, txt, cre_dat, upd_dat FROM art.t_art WHERE id = $1',
+      [id]
+    );
+    if (result.rows.length === 0) {
+      return res.status(404).json({ success: false, message: 'Article not found' });
+    }
+    res.json({ success: true, article: result.rows[0] });
+  } catch (error) {
+    console.error('Get article by id error:', error);
+    res.status(500).json({ success: false, message: 'Internal Server Error' });
+  }
+};
