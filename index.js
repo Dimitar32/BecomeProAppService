@@ -17,7 +17,7 @@ const PORT = process.env.PORT || 5000;
 app.use(express.json()); // Parse JSON payloads
 // app.use(cors());         // Enable CORS for all origins
 app.use(cors({
-  origin: 'http://localhost:3000', // or 'https://luminis.com' if that's the full domain//https://becomepro.netlify.app
+  origin: 'https://becomepro.netlify.app', // or 'https://luminis.com' if that's the full domain//https://becomepro.netlify.app
   credentials: true
 }));
 
