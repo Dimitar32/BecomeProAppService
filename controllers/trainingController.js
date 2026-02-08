@@ -5,7 +5,7 @@ import pool from '../utils/db.js';
 export const getExerciseCategories = async (req, res) => {
   try {
     const result = await pool.query(
-      'SELECT id, name, created_at FROM bp.excerxcie_categories ORDER BY name'
+      'SELECT id, name, created_at FROM bp.exercise_categories ORDER BY name'
     );
     res.json({ success: true, categories: result.rows });
   } catch (error) {
@@ -18,7 +18,7 @@ export const addExerciseCategory = async (req, res) => {
   const { name } = req.body;
   try {
     const result = await pool.query(
-      'INSERT INTO bp.excerxcie_categories (name) VALUES ($1) RETURNING id, name, created_at',
+      'INSERT INTO bp.exercise_categories (name) VALUES ($1) RETURNING id, name, created_at',
       [name]
     );
     res.status(201).json({ success: true, category: result.rows[0] });
@@ -33,7 +33,7 @@ export const updateExerciseCategory = async (req, res) => {
   const { name } = req.body;
   try {
     const result = await pool.query(
-      'UPDATE bp.excerxcie_categories SET name = $1 WHERE id = $2 RETURNING id, name, created_at',
+      'UPDATE bp.exercise_categories SET name = $1 WHERE id = $2 RETURNING id, name, created_at',
       [name, id]
     );
     if (result.rows.length === 0) {
@@ -50,7 +50,7 @@ export const deleteExerciseCategory = async (req, res) => {
   const { id } = req.params;
   try {
     const result = await pool.query(
-      'DELETE FROM bp.excerxcie_categories WHERE id = $1 RETURNING id',
+      'DELETE FROM bp.exercise_categories WHERE id = $1 RETURNING id',
       [id]
     );
     if (result.rows.length === 0) {
@@ -71,7 +71,7 @@ export const getExercises = async (req, res) => {
     const result = await pool.query(
       `SELECT e.id, e.name, e.category_id, c.name AS category, e.image_url, e.description, e.created_at
        FROM bp.exercise e
-       JOIN bp.excerxcie_categories c ON e.category_id = c.id
+       JOIN bp.exercise_categories c ON e.category_id = c.id
        WHERE ($1::bigint IS NULL OR e.category_id = $1)
        ORDER BY e.name`,
       [category_id || null]
