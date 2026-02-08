@@ -16,10 +16,10 @@ const PORT = process.env.PORT || 5000;
 // Middleware
 app.use(express.json()); // Parse JSON payloads
 // app.use(cors());         // Enable CORS for all origins
-app.use(cors({
-  origin: 'https://becomepro.netlify.app', // or 'https://luminis.com' if that's the full domain//https://becomepro.netlify.app
-  credentials: true
-}));
+// app.use(cors({
+//   origin: 'https://becomepro.netlify.app', // or 'https://luminis.com' if that's the full domain//https://becomepro.netlify.app
+//   credentials: true
+// }));
 
 app.use(loggerMiddleware); // Log all requests
 
