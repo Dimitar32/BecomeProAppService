@@ -70,7 +70,7 @@ export const getExercises = async (req, res) => {
   try {
     const result = await pool.query(
       `SELECT e.id, e.name, e.category_id, c.name AS category, e.image_url, e.description, e.created_at
-       FROM bp.excercie e
+       FROM bp.exercise e
        JOIN bp.excerxcie_categories c ON e.category_id = c.id
        WHERE ($1::bigint IS NULL OR e.category_id = $1)
        ORDER BY e.name`,
@@ -87,7 +87,7 @@ export const addExercise = async (req, res) => {
   const { name, category_id, image_url, description } = req.body;
   try {
     const result = await pool.query(
-      `INSERT INTO bp.excercie (name, category_id, image_url, description)
+      `INSERT INTO bp.exercise (name, category_id, image_url, description)
        VALUES ($1, $2, $3, $4)
        RETURNING id, name, category_id, image_url, description, created_at`,
       [name, category_id, image_url, description]
@@ -104,7 +104,7 @@ export const updateExercise = async (req, res) => {
   const { name, category_id, image_url, description } = req.body;
   try {
     const result = await pool.query(
-      `UPDATE bp.excercie
+      `UPDATE bp.exercise
        SET name = $1, category_id = $2, image_url = $3, description = $4
        WHERE id = $5
        RETURNING id, name, category_id, image_url, description, created_at`,
@@ -124,7 +124,7 @@ export const deleteExercise = async (req, res) => {
   const { id } = req.params;
   try {
     const result = await pool.query(
-      'DELETE FROM bp.excercie WHERE id = $1 RETURNING id',
+      'DELETE FROM bp.exercise WHERE id = $1 RETURNING id',
       [id]
     );
     if (result.rows.length === 0) {
@@ -243,7 +243,7 @@ export const getExerciseLogsBySession = async (req, res) => {
       `SELECT l.id, l.workout_session_id, l.exercise_id, e.name AS exercise, l.note, l.created_at
        FROM bp.exercise_log l
        JOIN bp.workout_session w ON l.workout_session_id = w.id
-       JOIN bp.excercie e ON l.exercise_id = e.id
+       JOIN bp.exercise e ON l.exercise_id = e.id
        WHERE l.workout_session_id = $1 AND w.user_id = $2
        ORDER BY l.id`,
       [sessionId, userId]

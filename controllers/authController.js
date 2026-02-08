@@ -11,7 +11,7 @@ export const login = async (req, res) => {
   console.log('Login request body:', req.body);
 
   try {
-    const user = await pool.query('SELECT * FROM usr.t_usr WHERE usr_nme = $1', [userName]);
+    const user = await pool.query('SELECT * FROM bp.t_usr WHERE usr_nme = $1', [userName]);
     console.log('User query result:', user.rows);
 
     if (user.rows.length === 0) {
@@ -58,7 +58,7 @@ export const register = async (req, res) => {
   try {
     // Check if username or email already exists
     const userExists = await pool.query(
-      'SELECT * FROM usr.t_usr WHERE usr_nme = $1 OR eml = $2',
+      'SELECT * FROM bp.t_usr WHERE usr_nme = $1 OR eml = $2',
       [userName, email]
     );
     console.log('User exists query result:', userExists.rows);
@@ -74,7 +74,7 @@ export const register = async (req, res) => {
 
     // Insert new user
     const newUser = await pool.query(
-      `INSERT INTO usr.t_usr 
+      `INSERT INTO bp.t_usr 
         (fst_nme, lst_nme, eml, usr_nme, pass, cre_by, upd_by)
        VALUES ($1, $2, $3, $4, $5, $6, $7)
        RETURNING id, usr_nme, eml`,
