@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import authRoutes from './routes/auth.js';
 import profileRoutes from './routes/profile.js';
 import trainingRoutes from './routes/training.js';
+import rankingsRoutes from './routes/rankings.js';
 import { errorHandler } from './middleware/errorMiddleware.js';
 import { loggerMiddleware } from './middleware/loggerMiddleware.js';
 
@@ -29,6 +30,7 @@ app.use(loggerMiddleware); // Log all requests
 app.use('/api', authRoutes);       // Authentication routes
 app.use('/api', profileRoutes);
 app.use('/api', trainingRoutes);
+app.use('/api', rankingsRoutes);
 
 // Error Handling Middleware
 app.use(errorHandler);
