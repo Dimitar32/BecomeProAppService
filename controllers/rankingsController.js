@@ -26,7 +26,7 @@ async function maxExerciseRanking(from, to, patterns) {
        JOIN bp.exercise_log    l ON s.exercise_log_id    = l.id
        JOIN bp.workout_session w ON l.workout_session_id = w.id
        JOIN bp.exercise        e ON l.exercise_id        = e.id
-       JOIN usr.t_usr          u ON w.user_id            = u.id
+       JOIN bp.t_usr            u ON w.user_id            = u.id
        WHERE w.started_at >= $1 AND w.started_at <= $2
          AND (${paramPlaceholders})
        ORDER BY u.id, s.weight_kg DESC
@@ -60,7 +60,7 @@ export const getRankings = async (req, res) => {
            u.usr_nme  AS username,
            COUNT(w.id)::int AS session_count
          FROM bp.workout_session w
-         JOIN usr.t_usr u ON w.user_id = u.id
+         JOIN bp.t_usr u ON w.user_id = u.id
          WHERE w.started_at >= $1 AND w.started_at <= $2
          GROUP BY u.id, u.usr_nme
          ORDER BY session_count DESC
@@ -77,7 +77,7 @@ export const getRankings = async (req, res) => {
          FROM bp.exercise_log_set s
          JOIN bp.exercise_log    l ON s.exercise_log_id    = l.id
          JOIN bp.workout_session w ON l.workout_session_id = w.id
-         JOIN usr.t_usr          u ON w.user_id            = u.id
+         JOIN bp.t_usr           u ON w.user_id            = u.id
          WHERE w.started_at >= $1 AND w.started_at <= $2
          GROUP BY u.id, u.usr_nme
          ORDER BY total_volume DESC
