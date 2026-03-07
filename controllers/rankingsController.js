@@ -99,6 +99,6 @@ export const getRankings = async (req, res) => {
     });
   } catch (error) {
     console.error('Get rankings error:', error);
-    res.status(500).json({ success: false, message: 'Internal Server Error' });
+    res.status(500).json({ success: false, message: error.message, detail: error.detail ?? null });
   }
 };
