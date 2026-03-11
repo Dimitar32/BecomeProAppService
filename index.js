@@ -5,6 +5,7 @@ import authRoutes from './routes/auth.js';
 import profileRoutes from './routes/profile.js';
 import trainingRoutes from './routes/training.js';
 import rankingsRoutes from './routes/rankings.js';
+import nutritionRoutes from './routes/nutrition.js';
 import { errorHandler } from './middleware/errorMiddleware.js';
 import { loggerMiddleware } from './middleware/loggerMiddleware.js';
 
@@ -31,6 +32,7 @@ app.use('/api', authRoutes);       // Authentication routes
 app.use('/api', profileRoutes);
 app.use('/api', trainingRoutes);
 app.use('/api', rankingsRoutes);
+app.use('/api', nutritionRoutes);
 
 // Error Handling Middleware
 app.use(errorHandler);
