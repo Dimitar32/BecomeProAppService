@@ -23,7 +23,7 @@ export const getProfile = async (req, res) => {
 
   try {
     const user = await pool.query(
-      'SELECT id, fst_nme, lst_nme, eml, usr_nme, cre_dat, cre_by, upd_dat, upd_by FROM usr.t_usr WHERE id = $1',
+      'SELECT id, fst_nme, lst_nme, eml, usr_nme, cre_dat, cre_by, upd_dat, upd_by FROM bp.t_usr WHERE id = $1',
       [userId]
     );
     if (user.rows.length === 0) {
@@ -46,7 +46,7 @@ export const updateProfile = async (req, res) => {
 
   try {
     const result = await pool.query(
-      `UPDATE usr.t_usr
+      `UPDATE bp.t_usr
        SET fst_nme = $1, lst_nme = $2, eml = $3, upd_dat = NOW(), upd_by = $4
        WHERE id = $5
        RETURNING id, fst_nme, lst_nme, eml, usr_nme, cre_dat, cre_by, upd_dat, upd_by`,
