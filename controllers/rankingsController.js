@@ -42,6 +42,31 @@ async function maxExerciseRanking(from, to, patterns) {
   return result.rows;
 }
 
+export const getUserSessionsForPeriod = async (req, res) => {
+  const { user_id, period = 'week', date } = req.query;
+  if (!user_id) {
+    return res.status(400).json({ success: false, message: 'user_id is required' });
+  }
+  if (!['week', 'month'].includes(period)) {
+    return res.status(400).json({ success: false, message: 'period must be "week" or "month"' });
+  }
+  try {
+    const { from, to } = await getPeriodBounds(period, date);
+    const result = await pool.query(
+      `SELECT w.id, w.note, w.started_at, u.usr_nme AS username
+       FROM bp.workout_session w
+       JOIN bp.t_usr u ON w.user_id = u.id
+       WHERE w.user_id = $1 AND w.started_at >= $2 AND w.started_at <= $3
+       ORDER BY w.started_at`,
+      [user_id, from, to]
+    );
+    res.json({ success: true, sessions: result.rows });
+  } catch (error) {
+    console.error('Get user sessions for period error:', error);
+    res.status(500).json({ success: false, message: 'Internal Server Error' });
+  }
+};
+
 export const getRankings = async (req, res) => {
   const { period = 'week', date } = req.query;
 
