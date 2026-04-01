@@ -7,6 +7,7 @@ import trainingRoutes from './routes/training.js';
 import rankingsRoutes from './routes/rankings.js';
 import nutritionRoutes from './routes/nutrition.js';
 import customMealsRoutes from './routes/customMeals.js';
+import supplementsRoutes from './routes/supplements.js';
 import { errorHandler } from './middleware/errorMiddleware.js';
 import { loggerMiddleware } from './middleware/loggerMiddleware.js';
 
@@ -35,6 +36,7 @@ app.use('/api', trainingRoutes);
 app.use('/api', rankingsRoutes);
 app.use('/api', nutritionRoutes);
 app.use('/api', customMealsRoutes);
+app.use('/api', supplementsRoutes);
 
 // Error Handling Middleware
 app.use(errorHandler);
