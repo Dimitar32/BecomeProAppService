@@ -3,6 +3,7 @@ import {
   getProfile,
   updateProfile,
   updateHeight,
+  updateTargetWeight,
   getBodyLog,
   addBodyLog,
   deleteBodyLog,
@@ -16,6 +17,7 @@ router.use(verifyToken);
 router.get('/profile', getProfile);
 router.put('/profile', updateProfile);
 router.patch('/profile/height', updateHeight);
+router.patch('/profile/target-weight', updateTargetWeight);
 
 router.get('/body-log', getBodyLog);
 router.post('/body-log', addBodyLog);

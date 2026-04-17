@@ -7,7 +7,7 @@ export const getProfile = async (req, res) => {
 
   try {
     const user = await pool.query(
-      'SELECT id, fst_nme, lst_nme, eml, usr_nme, height_cm, cre_dat, cre_by, upd_dat, upd_by FROM bp.t_usr WHERE id = $1',
+      'SELECT id, fst_nme, lst_nme, eml, usr_nme, height_cm, target_weight_kg, cre_dat, cre_by, upd_dat, upd_by FROM bp.t_usr WHERE id = $1',
       [userId]
     );
     if (user.rows.length === 0) {
@@ -68,6 +68,32 @@ export const updateHeight = async (req, res) => {
     res.json({ success: true, height_cm: result.rows[0].height_cm });
   } catch (error) {
     console.error('Update height error:', error);
+    res.status(500).json({ success: false, message: 'Internal Server Error' });
+  }
+};
+
+// Update target weight
+export const updateTargetWeight = async (req, res) => {
+  const userId = req.user.id;
+  if (!userId) return res.status(401).json({ success: false, message: 'Unauthorized' });
+
+  const { targetWeightKg } = req.body;
+  const w = parseFloat(targetWeightKg);
+  if (!Number.isFinite(w) || w < 20 || w > 300) {
+    return res.status(400).json({ success: false, message: 'Невалидно целево тегло (20–300 кг)' });
+  }
+
+  try {
+    const result = await pool.query(
+      'UPDATE bp.t_usr SET target_weight_kg = $1, upd_dat = NOW() WHERE id = $2 RETURNING id, target_weight_kg',
+      [w, userId]
+    );
+    if (result.rows.length === 0) {
+      return res.status(404).json({ success: false, message: 'User not found' });
+    }
+    res.json({ success: true, target_weight_kg: result.rows[0].target_weight_kg });
+  } catch (error) {
+    console.error('Update target weight error:', error);
     res.status(500).json({ success: false, message: 'Internal Server Error' });
   }
 };
